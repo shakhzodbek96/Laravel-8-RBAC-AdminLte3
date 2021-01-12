@@ -1,15 +1,12 @@
-<p align="center"><img src="https://unired.uz/templates/unired/img/slider/slider1.png"></p>
+<p align="center"><img src="https://adminlte.io/img/AdminLTE2.1.png"></p>
 
-## About Unired
+## About Template
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-- [Main site](https://unired.uz).
+This is ready admin panel template with
+- [AdminLte V3](https://adminlte.io/themes/v3/)
+- [Larvel 7.0](https://laravel.com/docs/7.x)
+- [Laravel-permissions (Spatie.be)](https://spatie.be/docs/laravel-permission/v3/introduction)
+- [Authorization laravel/ui](https://github.com/laravel/ui)
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
-# scoring
+# Laravel 7 & AdminLte 3.0 & RBAC

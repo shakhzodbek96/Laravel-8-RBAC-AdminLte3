@@ -45,7 +45,7 @@
 	<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 
 
-	<link rel="icon" href="/consImages/logoU.png ">
+	<link rel="icon" href="/consImages/logoU.png">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">

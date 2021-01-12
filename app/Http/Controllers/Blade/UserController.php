@@ -64,11 +64,16 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
-        $user->fill($request->all());
-        if ($request->get('password'))
+        if ($request->get('password') == null)
+        {
+            unset($request['password']);
+        }
+        else
         {
             $user->password = Hash::make($request->get('password'));
         }
+
+        $user->fill($request->all());
         $user->save();
         $user->syncRoles($request->get('roles'));
         return redirect()->route('userIndex');
