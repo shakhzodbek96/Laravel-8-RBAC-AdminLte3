@@ -41,8 +41,7 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories",
-            "app/controllers/blade"
+            "database/factories"
         ]
     },
     "autoload-dev": {
