@@ -21,7 +21,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 // Change language session condition
 Route::get('/language/{lang}',function ($lang){
     $lang = strtolower($lang);
@@ -33,6 +32,8 @@ Route::get('/language/{lang}',function ($lang){
     }
     return redirect()->back();
 });
+
+Route::resource('card','Admin\CardController',['except' => []]);
 
 // Web pages
 Route::group(['namespace'=>'Blade','middleware' => 'auth'],function (){

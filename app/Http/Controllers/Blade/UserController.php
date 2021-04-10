@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Blade;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -13,6 +13,9 @@ class UserController extends Controller
     // List of users
     public function index()
     {
+        if (!auth()->user()->can('user.show'))
+            return abort(404);
+
         $users = User::where('id','!=',auth()->user()->id)->get();
         return view('pages.user.index',compact('users'));
     }
@@ -20,6 +23,9 @@ class UserController extends Controller
     // user add page
     public function add()
     {
+        if (!auth()->user()->can('user.add'))
+            return abort(404);
+
         $roles = Role::all();
         return view('pages.user.add',compact('roles'));
     }
@@ -27,7 +33,6 @@ class UserController extends Controller
     // user create
     public function create(Request $request)
     {
-
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -48,6 +53,9 @@ class UserController extends Controller
     // user edit page
     public function edit($id)
     {
+        if (!auth()->user()->can('user.edit') && auth()->user()->id != $id)
+            return abort(404);
+
         $user = User::find($id);
         $roles = Role::all();
 
@@ -82,6 +90,9 @@ class UserController extends Controller
     // delete user by id
     public function destroy($id)
     {
+        if (!auth()->user()->can('user.delete'))
+            return abort(404);
+
         $user = User::destroy($id);
         return redirect()->route('userIndex');
     }

@@ -25,11 +25,12 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">@lang('cruds.permission.title_singular')</h3>
-
+                        @can('permission.add')
                         <a href="{{ route('permissionAdd') }}" class="btn btn-success btn-sm float-right">
                             <span class="fas fa-plus-circle"></span>
                             @lang('global.add')
                         </a>
+                        @endcan
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -51,19 +52,23 @@
                                     <td>{{ $permission->name }}</td>
                                     <td>{{ $permission->title }}</td>
                                     <td>
-                                        @foreach($permission->roles()->get()->pluck('name') as $role)
-                                            <span class="badge badge-success">{{ $role }} </span>
+                                        @foreach($permission->roles as $role)
+                                            <span class="badge badge-success">{{ $role->name }} </span>
                                         @endforeach
                                     </td>
                                     <td class="text-center">
+                                        @can('permission.delete')
                                         <form action="{{ route('permissionDestroy',$permission->id) }}" method="post">
                                             @csrf
                                             <div class="btn-group">
+                                                @can('permission.edit')
                                                 <a href="{{ route('permissionEdit',$permission->id) }}" type="button" class="btn btn-info btn-sm"> @lang('global.edit')</a>
+                                                @endcan
                                                 <input name="_method" type="hidden" value="DELETE">
                                                 <button type="button" class="btn btn-danger btn-sm" onclick="if (confirm('Вы уверены?')) {this.form.submit()}"> @lang('global.delete')</button>
                                             </div>
                                         </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

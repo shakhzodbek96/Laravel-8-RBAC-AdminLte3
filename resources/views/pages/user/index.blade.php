@@ -25,11 +25,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">@lang('cruds.user.title_singular')</h3>
-
+                            @can('user.add')
                             <a href="{{ route('userAdd') }}" class="btn btn-success btn-sm float-right">
                             <span class="fas fa-plus-circle"></span>
                                 @lang('global.add')
                             </a>
+                            @endcan
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -62,14 +63,18 @@
                                             @endforeach
                                         </td>
                                         <td class="text-center">
+                                            @can('user.delete')
                                             <form action="{{ route('userDestroy',$user->id) }}" method="post">
                                                 @csrf
                                                 <div class="btn-group">
+                                                    @can('user.edit')
                                                     <a href="{{ route('userEdit',$user->id) }}" type="button" class="btn btn-info btn-sm"> @lang('global.edit')</a>
+                                                    @endcan
                                                     <input name="_method" type="hidden" value="DELETE">
                                                     <button type="button" class="btn btn-danger btn-sm" onclick="if (confirm('Вы уверены?')) { this.form.submit() } "> @lang('global.delete')</button>
                                                 </div>
                                             </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

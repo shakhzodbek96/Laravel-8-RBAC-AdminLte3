@@ -1,0 +1,16 @@
+td.action-right
+{
+	text-align: center;
+	width: 15%;
+	vertical-align: middle;	
+}
+span.cotegory-name
+{
+	color:orangered;
+	font-weight:600;
+	font-size:large;
+}
+td img
+{
+	width: 100%;
+}

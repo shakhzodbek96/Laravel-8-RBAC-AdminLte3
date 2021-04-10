@@ -4,12 +4,15 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>@lang('panel.site_title')</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
+
         <!-- Styles -->
+        <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/bootstrap_my/my_style.css')}}">
         <style>
             html, body {
                 background-color: #fff;
@@ -64,9 +67,29 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+    <div class="loader">
+        <div class="loader-in">
+            <div class="inner one"></div>
+            <div class="inner two"></div>
+            <div class="inner three"></div>
+        </div>
+    </div>
+        <div class="wrapper flex-center position-ref full-height" style="display: none">
             @if (Route::has('login'))
                 <div class="top-right links">
+                    <div class="sl-nav" style="display: inline">
+                        <i class="sl-flag flag-{{ App::getLocale('locale') }}"></i>
+                        <ul>
+                            <li class="nav-link" style="padding-left: 0">{{ strtoupper(App::getLocale('locale')) }}
+                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                <div class="triangle"></div>
+                                <ul>
+                                    <li><a href="/language/uz"><i class="sl-flag flag-uz"><div id="uzbek"></div></i> <span>Uz</span></a></li>
+                                    <li><a href="/language/ru"><i class="sl-flag flag-ru"><div id="russian"></div></i> <span>Ru</span></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                     @auth
                         <a href="{{ url('/home') }}">@lang('global.home')</a>
                     @else
@@ -81,10 +104,20 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Scoring & Unired
+                    @lang('panel.site_title')
                 </div>
 
             </div>
         </div>
     </body>
 </html>
+
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+<script>
+    $(window).on('load', function() {
+        $(".loader-in").fadeOut();
+        $(".loader").delay(150).fadeOut("fast");
+        $(".wrapper").fadeIn("fast");
+        $("#app").fadeIn("fast");
+    });
+</script>

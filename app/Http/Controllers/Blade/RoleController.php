@@ -16,8 +16,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        if (!auth()->user()->can('roles.show'))
+            return abort(404);
 
+        $roles = Role::with('permissions')->get();
         return view('pages.roles.index',compact('roles'));
     }
 
@@ -51,6 +53,9 @@ class RoleController extends Controller
 
     public function add()
     {
+        if (!auth()->user()->can('roles.add'))
+            return abort(404);
+
         $permissions = Permission::all();
         return view('pages.roles.add',compact('permissions'));
     }
@@ -64,6 +69,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('roles.edit'))
+            return abort(404);
+
         $role = Role::findById($id);
         $permissions = Permission::all();
 
@@ -100,6 +108,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('roles.delete'))
+            return abort(404);
         $role = Role::findById($id);
         $role->delete();
         return redirect()->back();

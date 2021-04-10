@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Unired & Sugurta',
+    'site_title' => 'INSON | Insurance',
 ];

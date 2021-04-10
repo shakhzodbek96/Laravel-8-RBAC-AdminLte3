@@ -47,6 +47,7 @@
                                     <span class="error invalid-feedback">{{ $errors->first('email') }}</span>
                                 @endif
                             </div>
+                            @canany(['roles.edit','user.edit'])
                             <div class="form-group">
                                 <label>@lang('cruds.role.fields.roles')</label>
                                 <select class="select2" multiple="multiple" name="roles[]" data-placeholder="@lang('pleaseSelect')" style="width: 100%;">
@@ -55,6 +56,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endcan
                             <label>@lang('cruds.user.fields.password')</label>
                             <div class="form-group">
                                 <input type="password" name="password" id="password-field" class="form-control {{ $errors->has('password') ? "is-invalid":"" }}">

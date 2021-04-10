@@ -3,16 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Scoring | Admin</title>
+	<title>@lang('panel.site_title')</title>
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Font Awesome -->
-{{--	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">--}}
-{{--	<link rel="stylesheet" href="{{ asset('dist/fontawesome-free/css/all.min.css')}}">--}}
-{{--	<link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css')}}">--}}
-{{--	<link rel="stylesheet" href="{{ asset('dist/css/alt/adminlte.components.min.css')}}">--}}
-{{--	<link rel="stylesheet" href="{{ asset('dist/css/alt/adminlte.core.css')}}">--}}
-{{--	<link rel="stylesheet" href="{{ asset('dist/bootstrap_my/my_style.css')}}">--}}
+
 	<link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -44,19 +38,11 @@
 	<!-- SweetAlert2 -->
 	<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 
-
-	<link rel="icon" href="/consImages/logoU.png">
+	<link rel="icon" href="/consImages/logoU.png ">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
-<div class="loader">
-	<div class="loader-in">
-		<div class="inner one"></div>
-		<div class="inner two"></div>
-		<div class="inner three"></div>
-	</div>
-</div>
-<div class="wrapper" style="display: none">
+<div class="wrapper" style="display: block">
 	<!-- Navbar -->
 	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
@@ -67,27 +53,22 @@
 			</li>
 		</ul>
 
-		<!-- SEARCH FORM -->
-		<form class="form-inline ml-3">
-			<div class="input-group input-group-sm">
-				<input class="form-control form-control-navbar" type="search" placeholder="Google" aria-label="Search">
-				<div class="input-group-append">
-					<button class="btn btn-navbar" type="submit">
-						<i class="fas fa-search"></i>
-					</button>
-				</div>
-			</div>
-		</form>
 
 		<!-- Right navbar links -->
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item dropdown">
-				<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fas fa-user"></i> {{ auth()->user()->name }}</a>
+				<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fas fa-user"></i>
+                    @if(auth()->user())
+                        {{ auth()->user()->name }}
+                    @endif
+                </a>
 				<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
 					<li>
-						<a href="{{ route('userEdit',auth()->user()->id) }}" class="dropdown-item">
-							<i class="fas fa-cogs"></i> @lang('global.settings')
-						</a>
+						@if(auth()->user())
+                            <a href="{{ route('userEdit',auth()->user()->id) }}" class="dropdown-item">
+                                <i class="fas fa-cogs"></i> @lang('global.settings')
+                            </a>
+                        @endif
 					</li>
 					<li>
 						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -124,7 +105,7 @@
 		<a href="#" class="brand-link">
 			<img src="{{ asset('consImages/logoU.png') }}" alt="Unired Logo" class="brand-image img-circle elevation-3"
 				 style="opacity: .8">
-			<span class="brand-text font-weight-light">Unired | Scoring</span>
+			<span class="brand-text font-weight-light">@lang('panel.site_title')</span>
 		</a>
 
 		<!-- Sidebar -->
@@ -143,13 +124,7 @@
 	<!-- /.content -->
 	</div>
 	<!-- /.content-wrapper -->
-	<footer class="main-footer">
-		<strong>Copyright &copy; 2020 <a href="#">Admin Panel </a>.</strong>
-		All rights reserved.
-		<div class="float-right d-none d-sm-inline-block">
-			<b>Version</b> 1.0
-		</div>
-	</footer>
+
 
 	<!-- Control Sidebar -->
 	<aside class="control-sidebar control-sidebar-dark">
@@ -171,10 +146,6 @@
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-	$.widget.bridge('uibutton', $.ui.button)
-</script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
@@ -216,4 +187,20 @@
 <!-- MyJs -->
 <script src="{{asset('plugins/bootstrap_my/myScripts.js')}}" type="text/javascript"></script>
 
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+
+    //Clear form filters
+    $("#reset_form").on('click',function () {
+        $('form :input').val('');
+        $("form :input[class*='like-operator']").val('like');
+        $( "div[id*='_pair']" ).hide();
+    });
+
+    function onSelectSetValue(input_name, input_val) {
+        $("form :input[name="+input_name+"]").val(input_val);
+    }
+</script>
+@yield('scripts')
 </body>

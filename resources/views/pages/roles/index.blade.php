@@ -25,11 +25,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">@lang('cruds.role.title_singular')</h3>
-
+                            @can('roles.add')
                             <a href="{{ route('roleAdd') }}" class="btn btn-success btn-sm float-right">
                             <span class="fas fa-plus-circle"></span>
                                 @lang('global.add')
                             </a>
+                            @endcan
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -51,19 +52,23 @@
                                         <td>{{ $role->name }}</td>
                                         <td>{{ $role->title }}</td>
                                         <td>
-                                            @foreach($role->getAllPermissions()->pluck('name') as $permission)
-                                                <span class="badge badge-primary">{{ $permission }} </span>
+                                            @foreach($role->permissions as $permission)
+                                                <span class="badge badge-primary">{{ $permission->name }} </span>
                                             @endforeach
                                         </td>
                                         <td class="text-center">
+                                            @can('roles.delete')
                                             <form action="{{ route('roleDestroy',$role->id) }}" method="post">
                                                 @csrf
                                                 <div class="btn-group">
-                                                    <a href="{{ route('roleEdit',$role->id) }}" type="button" class="btn btn-info btn-sm"> @lang('global.edit')</a>
+                                                    @can('roles.edit')
+                                                        <a href="{{ route('roleEdit',$role->id) }}" type="button" class="btn btn-info btn-sm"> @lang('global.edit')</a>
+                                                    @endcan
                                                     <input name="_method" type="hidden" value="DELETE">
                                                     <button type="button" class="btn btn-danger btn-sm" onclick="if (confirm('Вы уверены?')) { this.form.submit() } "> @lang('global.delete')</button>
                                                 </div>
                                             </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

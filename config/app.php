@@ -42,30 +42,6 @@ return [
     'debug' => (bool) env('APP_DEBUG', false),
 
     /*
-     * Hide .env passwords while debugging
-     */
-    'debug_blacklist' => [
-        '_ENV' => [
-            'APP_KEY',
-            'DB_PASSWORD',
-            'REDIS_PASSWORD',
-            'MAIL_PASSWORD',
-            'PUSHER_APP_KEY',
-            'PUSHER_APP_SECRET',
-        ],
-        '_SERVER' => [
-            'APP_KEY',
-            'DB_PASSWORD',
-            'REDIS_PASSWORD',
-            'MAIL_PASSWORD',
-            'PUSHER_APP_KEY',
-            'PUSHER_APP_SECRET',
-        ],
-        '_POST' => [
-            'password',
-        ],
-    ],
-    /*
     |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
@@ -91,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tashkent',
 
     /*
     |--------------------------------------------------------------------------
@@ -185,11 +161,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
-            Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -219,7 +195,7 @@ return [
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
-        'Pages' => Illuminate\Support\Facades\Blade::class,
+        'Blade' => Illuminate\Support\Facades\Blade::class,
         'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
@@ -240,7 +216,7 @@ return [
         'Password' => Illuminate\Support\Facades\Password::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
-        'Redis' => Illuminate\Support\Facades\Redis::class,
+        // 'Redis' => Illuminate\Support\Facades\Redis::class,
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,
