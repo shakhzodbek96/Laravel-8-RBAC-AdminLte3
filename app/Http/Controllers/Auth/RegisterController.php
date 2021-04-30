@@ -66,14 +66,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // check if new coming user is first or single
+        $cnt = User::count();
+        
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-        // check if new coming user is first or single
-        $cnt = User::count();
+        
         if ($cnt === 0)
         {
             $perms_cnt = Permission::count();
