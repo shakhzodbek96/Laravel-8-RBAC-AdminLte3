@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Connect Helpers
+        foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 }

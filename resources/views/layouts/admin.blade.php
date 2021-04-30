@@ -134,15 +134,6 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-{{--<script src="{{asset('dist/jquery/jquery.min.js')}}"></script>--}}
-{{--<!-- jQuery UI 1.11.4 -->--}}
-{{--<script src="{{asset('dist/jquery-ui/jquery-ui.min.js')}}"></script>--}}
-{{--<script src="{{ asset('js/bootstrap.min.js') }}"></script>--}}
-{{--<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>--}}
-{{--<script src="{{ asset('dist/js/demo.min.js') }}"></script>--}}
-{{--<script src="{{ asset('dist/bootstrap_my/myScripts.js') }}" type="text/javascript"></script>--}}
-
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
@@ -201,6 +192,27 @@
     function onSelectSetValue(input_name, input_val) {
         $("form :input[name="+input_name+"]").val(input_val);
     }
+</script>
+@if(session('_message'))
+    <script>
+        Swal.fire({
+            position: 'top-end',
+            icon: "{{ session('_type') }}",
+            title: "{{ session('_message') }}",
+            showConfirmButton: false,
+            timer: {{session('_timer') ?? 5000}}
+        });
+    </script>
+    @php(message_clear())
+@endif
+<script>
+    Swal.fire({
+        position: 'top-end',
+        icon: "Success",
+        title: "Hello",
+        showConfirmButton: false,
+        timer: 5000
+    });
 </script>
 @yield('scripts')
 </body>

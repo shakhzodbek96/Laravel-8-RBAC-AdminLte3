@@ -43,3 +43,45 @@ $(".toggle-password").click(function() {
         input.attr("type", "password");
     }
 });
+
+function alertMessage(message = '',type = 'default') {
+
+    let messageDiv =
+        '<div class="alert alert-default-'+type+' alert-dismissible fade show" role="alert">\n' +
+        message+'\n' +
+        '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+        '    <span aria-hidden="true">&times;</span>\n' +
+        '  </button>\n' +
+        '</div>';
+
+    return messageDiv;
+}
+
+$('form').submit(function() {
+    let button = $(this).find("button[type=submit]:focus");
+    button.prop('disabled',true);
+    button.html('<i class="spinner-border spinner-border-sm text-light"></i> '+$(button).text() + '...');
+});
+
+$('.submitButton').click(function () {
+
+    if(confirm('Confirm action'))
+    {
+        $(this).prop('disabled',true);
+        $(this).html('<i class="spinner-border spinner-border-sm text-light"></i> '+$($(this)).text() + '...');
+        $(this).parents('form:first').submit();
+    }
+
+});
+
+function SpinnerGo(obj) {
+    $(obj).prop('disabled',true);
+    $(obj).html('<i class="spinner-border spinner-border-sm text-light"></i> '+$($(obj)).text());
+}
+
+function SpinnerStop(obj) {
+    $(obj).prop('disabled',false);
+    $(obj).html($($(obj)).text());
+}
+
+
