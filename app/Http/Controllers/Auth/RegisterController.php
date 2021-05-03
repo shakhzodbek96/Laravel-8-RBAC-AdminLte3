@@ -68,13 +68,13 @@ class RegisterController extends Controller
     {
         // check if new coming user is first or single
         $cnt = User::count();
-        
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        
+
         if ($cnt === 0)
         {
             $perms_cnt = Permission::count();
@@ -94,6 +94,7 @@ class RegisterController extends Controller
                     ["id" => 10, "name" => 'user.edit', "title" => 'Userlarni o\'zgartirish', "guard_name" => 'web'],
                     ["id" => 11, "name" => 'user.add', "title" => 'Yangi Userlarni qo\'shish', "guard_name" => 'web'],
                     ["id" => 12, "name" => 'user.delete', "title" => 'Userlarni o\'chirish', "guard_name" => 'web'],
+                    ["id" => 13, "name" => 'super.admin', "title" => 'Super Admin', "guard_name" => 'web'],
                 ]);
             }
 

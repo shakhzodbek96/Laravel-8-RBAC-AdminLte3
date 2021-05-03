@@ -131,12 +131,18 @@ class UserController extends Controller
         if (!auth()->user()->can('user.delete'))
             return abort(403);
 
-        $deleted_by = logObj(auth()->user());
-        $user = logObj(User::find($id));
-        $message = "\nDeleted By: $deleted_by\nDeleted user: $user";
-        LogWriter::user_activity($message,'DeletingUsers');
-
         $user = User::destroy($id);
+
+        if ($user->can('super.admin') && !auth()->user()->can('super.admin'))
+        {
+            message_set("У вас нет разрешения на редактирование администратора",'error',5);
+            return redirect()->back();
+        }
+
+        $deleted_by = logObj(auth()->user());
+        $user_log = logObj(User::find($id));
+        $message = "\nDeleted By: $deleted_by\nDeleted user: $user_log";
+        LogWriter::user_activity($message,'DeletingUsers');
         return redirect()->route('userIndex');
     }
 }

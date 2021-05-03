@@ -60,6 +60,15 @@ if (!function_exists('phoneFormat')) {
             return $value;
     }
 }
+if (!function_exists('message_set'))
+{
+    function message_set($message,$type,$timer = 15)
+    {
+        session()->put('_message',$message);
+        session()->put('_type',$type);
+        session()->put('_timer',$timer*1000);
+    }
+}
 
 if (!function_exists('message_clear'))
 {
