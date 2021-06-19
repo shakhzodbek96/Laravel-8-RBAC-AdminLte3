@@ -22,8 +22,6 @@
 	<link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
 	<!-- overlayScrollbars -->
 	<link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
-	<!-- Daterange picker -->
-	<link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
 	<!-- My styles -->
 	<link rel="stylesheet" href="{{asset('plugins/bootstrap_my/my_style.css')}}">
 	<!-- Responsive data tables -->
@@ -140,9 +138,6 @@
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <!-- Bootstrap4 Duallistbox -->
 <script src="{{ asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
-<!-- daterangepicker -->
-<script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-<script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- DataTables -->
@@ -155,8 +150,6 @@
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('dist/js/adminlte.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{asset('dist/js/demo.js')}}"></script>
 <!-- SweetAlert2 -->
 <script src="{{asset('plugins/sweetalert2-theme-bootstrap-4/sweet-alerts.min.js') }}"></script>
 <!-- MyJs -->
