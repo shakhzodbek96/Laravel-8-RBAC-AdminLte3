@@ -84,4 +84,41 @@ function SpinnerStop(obj) {
     $(obj).html($($(obj)).text());
 }
 
+function afterSubmit(obj){
+    $(obj).prop('disabled',true);
+    $(obj).html('<i class="spinner-border spinner-border-sm text-light"></i> '+$($(obj)).text());
+    obj.form.submit();
+}
+function toggle_avtospisaniya(client_id,token,obj) {
+
+    $.ajax({
+        url: '/clients/auto-toggle',
+        type: "post", //send it through post method
+        data: {
+            _token: token,
+            client_id:client_id
+        },
+        beforeSend:function () {
+            // $(obj).removeAttr('class');
+            $(obj).attr('class','spinner-border spinner-border-sm text-secondary');
+        },
+        success:function (result) {
+
+            if (result.auto === true)
+            {
+                $(obj).attr('class','fas fa-check-circle text-success');
+            }else if (result.auto === false)
+            {
+                $(obj).attr('class','fas fa-times-circle text-danger');
+            } else
+            {
+                $(obj).attr('class','fas fa-question-circle text-warning');
+            }
+        },
+        error:function (err) {
+            $(obj).attr('class','fas fa-question-circle text-warning');
+        }
+    })
+}
+
 

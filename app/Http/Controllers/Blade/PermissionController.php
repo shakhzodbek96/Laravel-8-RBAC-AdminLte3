@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Blade;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Validator;
 
 class PermissionController extends Controller
 {
@@ -16,9 +15,7 @@ class PermissionController extends Controller
     // list of permissions
     public function index()
     {
-        if (!auth()->user()->can('permission.show'))
-            return abort(404);
-
+        abort_if (!auth()->user()->can('permission.show'),403);
         $permissions = Permission::with('roles')->get();
         return view('pages.permissions.index',compact('permissions'));
     }
@@ -26,15 +23,15 @@ class PermissionController extends Controller
     // add permission page
     public function add()
     {
-        if (!auth()->user()->can('permission.add'))
-            return abort(404);
-
+        abort_if (!auth()->user()->can('permission.add'),403);
         return view('pages.permissions.add');
     }
 
     //create permission
     public function create(Request $request)
     {
+        abort_if (!auth()->user()->can('permission.add'),403);
+
         $this->validate($request,[
             'name' => 'required|unique:permissions'
         ]);
@@ -43,16 +40,14 @@ class PermissionController extends Controller
             'name' => $request->get('name'),
             'title' => $request->get('title')
         ]);
-
+        message_set('New permission is added!','success',2);
         return redirect()->route('permissionIndex');
     }
 
     // edit page
     public function edit($id)
     {
-        if (!auth()->user()->can('permission.edit'))
-            return abort(404);
-
+        abort_if (!auth()->user()->can('permission.edit'),403);
         $permission = Permission::findById($id);
         return view('pages.permissions.edit',compact('permission'));
     }
@@ -60,29 +55,33 @@ class PermissionController extends Controller
     // update data
     public function update(Request $request,$id)
     {
+        abort_if (!auth()->user()->can('permission.edit'),403);
+
         $this->validate($request,[
             'name' => 'required|unique:permissions,name,'.$id
         ]);
 
         $permission = Permission::findById($id);
         $permission->name = $request->get('name');
+
         if ($request->has('title'))
         {
             $permission->title = $request->get('title');
         }
         $permission->save();
-
+        message_set('Permission is updated!','success',2);
         return redirect()->route('permissionIndex');
     }
 
     // delete permission
     public function destroy($id)
     {
-        if (!auth()->user()->can('permission.delete'))
-            return abort(404);
-
+        abort_if (!auth()->user()->can('permission.delete'),403);
         $permission = Permission::findById($id);
+        DB::table('model_has_permissions')->where('permission_id',$id)->delete();
+        DB::table('role_has_permissions')->where('permission_id',$id)->delete();
         $permission->delete();
+        message_set('Permission is deleted!','success',2);
         return redirect()->back();
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\LogWriter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -14,22 +15,19 @@ class UserController extends Controller
     // List of users
     public function index()
     {
-        if (!auth()->user()->can('user.show'))  return abort(403);
-
+        abort_if (!auth()->user()->can('user.show'),403);
         $users = User::where('id','!=',auth()->user()->id)->get();
-
         return view('pages.user.index',compact('users'));
     }
 
     // user add page
     public function add()
     {
-        if (!auth()->user()->can('user.add')) return abort(403);
-
-        $roles = Role::all();
-
-        if (!auth()->user()->can('super.admin'))
-            $roles = $roles->where('name','!=','Admin')->all();
+        abort_if (!auth()->user()->can('user.add'),403);
+        if (auth()->user()->hasRole('Super Admin'))
+            $roles = Role::all();
+        else
+            $roles = Role::where('name','!=','Super Admin')->get();
 
         return view('pages.user.add',compact('roles'));
     }
@@ -37,7 +35,7 @@ class UserController extends Controller
     // user create
     public function create(Request $request)
     {
-
+        abort_if (!auth()->user()->can('user.add'),403);
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -52,7 +50,7 @@ class UserController extends Controller
 
         $user->assignRole($request->get('roles'));
 
-        $activity = "\nCreator: ".json_encode(auth()->user())
+        $activity = "\nCreated by: ".json_encode(auth()->user())
             ."\nNew User: ".json_encode($user)
             ."\nRoles: ".implode(", ",$request->get('roles'));
 
@@ -64,20 +62,20 @@ class UserController extends Controller
     // user edit page
     public function edit($id)
     {
-        if (!auth()->user()->can('user.edit') && auth()->user()->id != $id) return abort(403);
+        abort_if((!auth()->user()->can('user.edit') && auth()->user()->id != $id),403);
 
         $user = User::find($id);
 
-        if ($user->hasRole('Admin') && !auth()->user()->can('super.admin') && auth()->user()->id != $id)
+        if ($user->hasRole('Super Admin') && !auth()->user()->hasRole('Super Admin'))
         {
             message_set("У вас нет разрешения на редактирование администратора",'error',5);
             return redirect()->back();
         }
 
-        $roles = Role::all();
-
-        if (!auth()->user()->can('super.admin'))
-            $roles = $roles->where('name','!=','Admin')->all();
+        if (auth()->user()->hasRole('Super Admin'))
+            $roles = Role::all();
+        else
+            $roles = Role::where('name','!=','Super Admin')->get();
 
         return view('pages.user.edit',compact('user','roles'));
     }
@@ -85,8 +83,9 @@ class UserController extends Controller
     // update user dates
     public function update(Request $request, $id)
     {
-        $activity = "\nUpdater: ".logObj(auth()->user());
+        abort_if((!auth()->user()->can('user.edit') && auth()->user()->id != $id),403);
 
+        $activity = "\nUpdated by: ".logObj(auth()->user());
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$id],
@@ -95,16 +94,12 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        if ($request->get('password') == null)
-        {
-            unset($request['password']);
-        }
-        else
+        if ($request->get('password') != null)
         {
             $user->password = Hash::make($request->get('password'));
-            unset($request['password']);
         }
 
+        unset($request['password']);
         $activity .="\nBefore updates User: ".logObj($user);
         $activity .=' Roles before: "'.implode(',',$user->getRoleNames()->toArray()).'"';
 
@@ -128,17 +123,16 @@ class UserController extends Controller
     // delete user by id
     public function destroy($id)
     {
-        if (!auth()->user()->can('user.delete'))
-            return abort(403);
+        abort_if (!auth()->user()->can('user.delete'),403);
 
         $user = User::destroy($id);
-
-        if ($user->can('super.admin') && !auth()->user()->can('super.admin'))
+        if ($user->hasRole('Super Admin') && !auth()->user()->hasRole('Super Admin'))
         {
             message_set("У вас нет разрешения на редактирование администратора",'error',5);
             return redirect()->back();
         }
-
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        DB::table('model_has_permissions')->where('model_id',$id)->delete();
         $deleted_by = logObj(auth()->user());
         $user_log = logObj(User::find($id));
         $message = "\nDeleted By: $deleted_by\nDeleted user: $user_log";

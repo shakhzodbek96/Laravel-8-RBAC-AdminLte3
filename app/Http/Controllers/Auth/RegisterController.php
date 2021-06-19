@@ -82,19 +82,20 @@ class RegisterController extends Controller
             if ($perms_cnt === 0)
             {
                 Permission::insert([
-                    ["id" => 1, "name" => 'permission.show', "title" => 'Ruxsatlarni ko\'rish', "guard_name" => 'web'],
-                    ["id" => 2, "name" => 'permission.edit', "title" => 'Ruxsatlarni o\'zgartirish', "guard_name" => 'web'],
-                    ["id" => 3, "name" => 'permission.add', "title" => 'Yangi ruxsat qo\'shish', "guard_name" => 'web'],
-                    ["id" => 4, "name" => 'permission.delete', "title" => 'Ruxsatlarni o\'chirish', "guard_name" => 'web'],
-                    ["id" => 5, "name" => 'roles.show', "title" => 'Rollarni ko\'rish', "guard_name" => 'web'],
-                    ["id" => 6, "name" => 'roles.edit', "title" => 'Rollarni o\'zgartirish', "guard_name" => 'web'],
-                    ["id" => 7, "name" => 'roles.add', "title" => 'Rollar qo\'shish', "guard_name" => 'web'],
-                    ["id" => 8, "name" => 'roles.delete', "title" => 'Rollarni o\'chirish', "guard_name" => 'web'],
-                    ["id" => 9, "name" => 'user.show', "title" => 'Userlarni ko\'rish', "guard_name" => 'web'],
-                    ["id" => 10, "name" => 'user.edit', "title" => 'Userlarni o\'zgartirish', "guard_name" => 'web'],
-                    ["id" => 11, "name" => 'user.add', "title" => 'Yangi Userlarni qo\'shish', "guard_name" => 'web'],
-                    ["id" => 12, "name" => 'user.delete', "title" => 'Userlarni o\'chirish', "guard_name" => 'web'],
-                    ["id" => 13, "name" => 'super.admin', "title" => 'Super Admin', "guard_name" => 'web'],
+                    ["name" => 'permission.show', "title" => 'Ruxsatlarni ko\'rish', "guard_name" => 'web'],
+                    ["name" => 'permission.edit', "title" => 'Ruxsatlarni o\'zgartirish', "guard_name" => 'web'],
+                    ["name" => 'permission.add', "title" => 'Yangi ruxsat qo\'shish', "guard_name" => 'web'],
+                    ["name" => 'permission.delete', "title" => 'Ruxsatlarni o\'chirish', "guard_name" => 'web'],
+
+                    ["name" => 'roles.show', "title" => 'Rollarni ko\'rish', "guard_name" => 'web'],
+                    ["name" => 'roles.edit', "title" => 'Rollarni o\'zgartirish', "guard_name" => 'web'],
+                    ["name" => 'roles.add', "title" => 'Rollar qo\'shish', "guard_name" => 'web'],
+                    ["name" => 'roles.delete', "title" => 'Rollarni o\'chirish', "guard_name" => 'web'],
+
+                    ["name" => 'user.show', "title" => 'Userlarni ko\'rish', "guard_name" => 'web'],
+                    ["name" => 'user.edit', "title" => 'Userlarni o\'zgartirish', "guard_name" => 'web'],
+                    ["name" => 'user.add', "title" => 'Yangi Userlarni qo\'shish', "guard_name" => 'web'],
+                    ["name" => 'user.delete', "title" => 'Userlarni o\'chirish', "guard_name" => 'web'],
                 ]);
             }
 
@@ -102,21 +103,14 @@ class RegisterController extends Controller
 
             if ($role_cnt === 0)
             {
-                $role = Role::create([
-                    'id' => 1,
-                    'name' => 'Admin',
-                    'title' => 'Admin',
+                Role::create([
+                    'name' => 'Super Admin',
+                    'title' => 'Super Admin',
                     'guard_name' => 'web'
                 ]);
-
-                $permissions = Permission::all();
-
-                foreach ($permissions as $permission) {
-                    $role->givePermissionTo($permission->name);
-                }
             }
 
-            $user->assignRole('Admin');
+            $user->assignRole('Super admin');
         }
 
         return $user;

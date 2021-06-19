@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Blade;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -12,24 +13,29 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        if (!auth()->user()->can('roles.show'))
-            return abort(404);
+        abort_if (!auth()->user()->can('roles.show'),403);
 
-        $roles = Role::with('permissions')->get();
+        if (auth()->user()->hasRole('Super Admin'))
+            $roles = Role::with('permissions')->get();
+        else
+            $roles = Role::where('name','!=','Super Admin')->with('permissions')->get();
+
         return view('pages.roles.index',compact('roles'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function create(Request $request)
     {
+        abort_if (!auth()->user()->can('roles.add'),403);
+
         $this->validate($request,[
             'name' => 'required|unique:roles'
         ]);
@@ -53,9 +59,7 @@ class RoleController extends Controller
 
     public function add()
     {
-        if (!auth()->user()->can('roles.add'))
-            return abort(404);
-
+        abort_if (!auth()->user()->can('roles.add'),403);
         $permissions = Permission::all();
         return view('pages.roles.add',compact('permissions'));
     }
@@ -65,14 +69,14 @@ class RoleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('roles.edit'))
-            return abort(404);
-
+        abort_if(!auth()->user()->can('roles.edit'),403);
         $role = Role::findById($id);
+
+        abort_if ($role->name == 'Super Admin' && !auth()->user()->hasRole('Super Admin'),403);
         $permissions = Permission::all();
 
         return view('pages.roles.edit',compact('role','permissions'));
@@ -83,7 +87,7 @@ class RoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -93,6 +97,9 @@ class RoleController extends Controller
         $permissions = $request->get('permissions');
         unset($request['permissions']);
         $role = Role::findById($id);
+
+        abort_if ($role->name == 'Super Admin' && !auth()->user()->hasRole('Super Admin'),403);
+
         $role->fill($request->all());
         $role->syncPermissions($permissions);
         $role->save();
@@ -104,14 +111,23 @@ class RoleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('roles.delete'))
-            return abort(404);
+        abort_if (!auth()->user()->can('roles.delete'),403);
         $role = Role::findById($id);
+
+        if ($role->name == 'Super Admin')
+        {
+            message_set('You Cannot delete Super Admin Role!','warning',3);
+            return redirect()->back();
+        }
+        DB::table('model_has_roles')->where('role_id',$id)->delete();
+        DB::table('role_has_permissions')->where('role_id',$id)->delete();
         $role->delete();
+        message_set('Role is deleted','success',3);
+
         return redirect()->back();
     }
 }

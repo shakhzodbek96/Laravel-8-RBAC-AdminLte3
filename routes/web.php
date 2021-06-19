@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Blade\UserController;
+use App\Http\Controllers\Blade\RoleController;
+use App\Http\Controllers\Blade\PermissionController;
+use App\Http\Controllers\Blade\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +21,37 @@ Auth::routes();
 
 
 // Welcome page
-Route::get('/', function () {
-    return view('welcome');
+Route::view('/', 'welcome')->name('welcome');
+
+// Web pages
+Route::group(['middleware' => 'auth'],function (){
+
+    // there should be graphics, diagrams about total conditions
+    Route::get('/home', [HomeController::class,'index'])->name('home');
+
+    // Users
+    Route::get('/users',[UserController::class,'index'])->name('userIndex');
+    Route::get('/user/add',[UserController::class,'add'])->name('userAdd');
+    Route::post('/user/create',[UserController::class,'create'])->name('userCreate');
+    Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('userEdit');
+    Route::post('/user/update/{id}',[UserController::class,'update'])->name('userUpdate');
+    Route::delete('/user/delete/{id}',[UserController::class,'destroy'])->name('userDestroy');
+
+    // Permissions
+    Route::get('/permissions',[PermissionController::class,'index'])->name('permissionIndex');
+    Route::get('/permission/add',[PermissionController::class,'add'])->name('permissionAdd');
+    Route::post('/permission/create',[PermissionController::class,'create'])->name('permissionCreate');
+    Route::get('/permission/{id}/edit',[PermissionController::class,'edit'])->name('permissionEdit');
+    Route::post('/permission/update/{id}',[PermissionController::class,'update'])->name('permissionUpdate');
+    Route::delete('/permission/delete/{id}',[PermissionController::class,'destroy'])->name('permissionDestroy');
+
+    // Roles
+    Route::get('/roles',[RoleController::class,'index'])->name('roleIndex');
+    Route::get('/role/add',[RoleController::class,'add'])->name('roleAdd');
+    Route::post('/role/create',[RoleController::class,'create'])->name('roleCreate');
+    Route::get('/role/{role_id}/edit',[RoleController::class,'edit'])->name('roleEdit');
+    Route::post('/role/update/{role_id}',[RoleController::class,'update'])->name('roleUpdate');
+    Route::delete('/role/delete/{id}',[RoleController::class,'destroy'])->name('roleDestroy');
 });
 
 // Change language session condition
@@ -31,39 +64,6 @@ Route::get('/language/{lang}',function ($lang){
         ]);
     }
     return redirect()->back();
-});
-
-Route::resource('card','Admin\CardController',['except' => []]);
-
-// Web pages
-Route::group(['namespace'=>'Blade','middleware' => 'auth'],function (){
-
-    // there should be graphics, diograms about total conditions
-    Route::get('/home', 'HomeController@index')->name('home');
-
-    // Users
-    Route::get('/users','UserController@index')->name('userIndex');
-    Route::get('/user/add','UserController@add')->name('userAdd');
-    Route::post('/user/create','UserController@create')->name('userCreate');
-    Route::get('/user/{id}/edit','UserController@edit')->name('userEdit');
-    Route::post('/user/update/{id}','UserController@update')->name('userUpdate');
-    Route::delete('/user/delete/{id}','UserController@destroy')->name('userDestroy');
-
-    // Permissions
-    Route::get('/permissions','PermissionController@index')->name('permissionIndex');
-    Route::get('/permission/add','PermissionController@add')->name('permissionAdd');
-    Route::post('/permission/create','PermissionController@create')->name('permissionCreate');
-    Route::get('/permission/{id}/edit','PermissionController@edit')->name('permissionEdit');
-    Route::post('/permission/update/{id}','PermissionController@update')->name('permissionUpdate');
-    Route::delete('/permission/delete/{id}','PermissionController@destroy')->name('permissionDestroy');
-
-    // Roles
-    Route::get('/roles','RoleController@index')->name('roleIndex');
-    Route::get('/role/add','RoleController@add')->name('roleAdd');
-    Route::post('/role/create','RoleController@create')->name('roleCreate');
-    Route::get('/role/{role_id}/edit','RoleController@edit')->name('roleEdit');
-    Route::post('/role/update/{role_id}','RoleController@update')->name('roleUpdate');
-    Route::delete('/role/delete/{id}','RoleController@destroy')->name('roleDestroy');
 });
 
 /*

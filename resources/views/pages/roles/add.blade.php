@@ -23,7 +23,7 @@
 
     <section class="content">
         <div class="row">
-            <div class="col-8 offset-2">
+            <div class="col-lg-8 offset-lg-2 col-sm-12">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">@lang('global.add')</h3>

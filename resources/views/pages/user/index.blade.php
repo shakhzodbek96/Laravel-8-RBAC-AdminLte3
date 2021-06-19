@@ -35,7 +35,7 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <!-- Data table -->
-                            <table id="dataTable" class="table table-bordered table-striped dataTable dtr-inline" user="grid" aria-describedby="dataTable_info">
+                            <table id="dataTable" class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg" user="grid" aria-describedby="dataTable_info">
                                 <thead>
                                 <tr>
                                     <th>@lang('cruds.user.fields.id')</th>

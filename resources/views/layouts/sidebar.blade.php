@@ -35,8 +35,8 @@
                 @endcan
 
                 @can('user.show')
-                <li class="nav-item  {{ Request::is('user*') ? "active":'' }}">
-                    <a href="{{ route('userIndex') }}" class="nav-link">
+                <li class="nav-item">
+                    <a href="{{ route('userIndex') }}" class="nav-link {{ Request::is('user*') ? "active":'' }}">
                         <i class="fas fa-user-friends"></i>
                         <p> @lang('cruds.user.title')</p>
                     </a>
