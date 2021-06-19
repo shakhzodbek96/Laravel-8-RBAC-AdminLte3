@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'days'                                   => 'Kunlar',
+    'theme'                                 => 'Tema',
+    'days'                                  => 'Kunlar',
     'refund_id'                             => 'Qaytarilgan TR_ID',
     'sms'                                   => 'SMS',
     'account_code'                          => 'Account code',

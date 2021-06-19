@@ -139,4 +139,24 @@ class UserController extends Controller
         LogWriter::user_activity($message,'DeletingUsers');
         return redirect()->route('userIndex');
     }
+
+    public function setTheme(Request $request,$id)
+    {
+        $this->validate($request,[
+            'theme' => 'required'
+        ]);
+
+        if (!in_array($request->theme,['default','dark','light']))
+        {
+            message_set("There is no theme like $request->theme!",'warning',3);
+        }
+        else
+        {
+            $user = User::findOrFail($id);
+            $user->setTheme($request->theme);
+            message_set("Theme `$request->theme` is installed!",'success',1);
+        }
+
+        return redirect()->back();
+    }
 }

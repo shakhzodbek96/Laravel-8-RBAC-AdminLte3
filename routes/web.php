@@ -21,7 +21,9 @@ Auth::routes();
 
 
 // Welcome page
-Route::view('/', 'welcome')->name('welcome');
+Route::get('/', function (){
+    return redirect()->route('home');
+})->name('welcome');
 
 // Web pages
 Route::group(['middleware' => 'auth'],function (){
@@ -36,6 +38,7 @@ Route::group(['middleware' => 'auth'],function (){
     Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('userEdit');
     Route::post('/user/update/{id}',[UserController::class,'update'])->name('userUpdate');
     Route::delete('/user/delete/{id}',[UserController::class,'destroy'])->name('userDestroy');
+    Route::get('/user/theme-set/{id}',[UserController::class,'setTheme'])->name('userSetTheme');
 
     // Permissions
     Route::get('/permissions',[PermissionController::class,'index'])->name('permissionIndex');

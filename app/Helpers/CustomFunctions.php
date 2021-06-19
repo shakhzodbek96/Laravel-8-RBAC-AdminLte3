@@ -1,6 +1,32 @@
 <?php
 
-CONST AUTO_START_DAY = 28;
+if (!function_exists('setUserTheme')) {
+    function setUserTheme($theme)
+    {
+        $classes = [
+          'default' => [
+              'body' => '',
+              'nav' => ' navbar-light ',
+              'sidebar' => 'sidebar-dark-primary ',
+          ],
+          'light' => [
+              'body' => '',
+              'nav' => ' navbar-white ',
+              'sidebar' => ' sidebar-light-lightblue '
+          ],
+          'dark' => [
+              'body' => ' dark-mode ',
+              'nav' => ' navbar-dark ',
+              'sidebar' => ' sidebar-dark-secondary '
+          ]
+        ];
+        return $classes[$theme] ?? [
+                'body' => '',
+                'nav' => ' navbar-light ',
+                'sidebar' => 'sidebar-dark-primary ',
+            ];
+    }
+}
 
 if (!function_exists('price_format')) {
     function price_format($price)

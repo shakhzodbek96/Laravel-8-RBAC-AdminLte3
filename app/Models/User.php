@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email','password'
+        'name', 'email','password','theme'
     ];
 
     /**
@@ -38,6 +38,37 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function setTheme(string $theme)
+    {
+        $this->theme = $theme;
+        $this->save();
+    }
+
+    public function theme():array
+    {
+        $classes = [
+            'default' => [
+                'body' => '',
+                'navbar' => ' navbar-light ',
+                'sidebar' => 'sidebar-dark-primary ',
+            ],
+            'light' => [
+                'body' => '',
+                'navbar' => ' navbar-white ',
+                'sidebar' => ' sidebar-light-lightblue '
+            ],
+            'dark' => [
+                'body' => ' dark-mode ',
+                'navbar' => ' navbar-dark ',
+                'sidebar' => ' sidebar-dark-secondary '
+            ]
+        ];
+        return $classes[$this->theme] ?? [
+                'body' => '',
+                'navbar' => ' navbar-light ',
+                'sidebar' => ' sidebar-dark-primary ',
+            ];
+    }
 
     /**
      * Prepare a date for array / JSON serialization.

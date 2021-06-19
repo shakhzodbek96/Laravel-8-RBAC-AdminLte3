@@ -33,10 +33,10 @@
 	<link rel="icon" href="/consImages/logoU.png ">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+<body class="{{ auth()->user()->theme()['body'] ?? '' }} hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 <div class="wrapper" style="display: block">
-	<!-- Navbar -->
-	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+	<!-- Navbar-->
+	<nav class="main-header navbar navbar-expand {{ auth()->user()->theme()['navbar'] ?? 'navbar-light' }}">
 
 		<!-- Left navbar links -->
 		<ul class="navbar-nav">
@@ -91,7 +91,7 @@
 	<!-- /.navbar -->
 
 	<!-- Main Sidebar Container -->
-	<aside class="main-sidebar nav-flat sidebar-dark-primary elevation-1">
+	<aside class="main-sidebar elevation-1 {{ auth()->user()->theme()['sidebar'] ?? 'sidebar-dark-primary' }}">
 		<!-- Brand Logo -->
 		<a href="#" class="brand-link">
 			<img src="{{ asset('consImages/logoU.png') }}" alt="Unired Logo" class="brand-image img-circle elevation-3"
