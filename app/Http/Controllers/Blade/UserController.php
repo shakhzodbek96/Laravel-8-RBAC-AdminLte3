@@ -15,7 +15,7 @@ class UserController extends Controller
     // List of users
     public function index()
     {
-        abort_if (!auth()->user()->can('user.show'),403);
+        abort_if_forbidden('user.show');
         $users = User::where('id','!=',auth()->user()->id)->get();
         return view('pages.user.index',compact('users'));
     }
@@ -23,7 +23,7 @@ class UserController extends Controller
     // user add page
     public function add()
     {
-        abort_if (!auth()->user()->can('user.add'),403);
+        abort_if_forbidden('user.add');
         if (auth()->user()->hasRole('Super Admin'))
             $roles = Role::all();
         else
@@ -35,7 +35,7 @@ class UserController extends Controller
     // user create
     public function create(Request $request)
     {
-        abort_if (!auth()->user()->can('user.add'),403);
+        abort_if_forbidden('user.add');
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -123,7 +123,7 @@ class UserController extends Controller
     // delete user by id
     public function destroy($id)
     {
-        abort_if (!auth()->user()->can('user.delete'),403);
+        abort_if_forbidden('user.delete');
 
         $user = User::destroy($id);
         if ($user->hasRole('Super Admin') && !auth()->user()->hasRole('Super Admin'))

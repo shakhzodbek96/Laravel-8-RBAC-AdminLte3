@@ -1,5 +1,12 @@
 <?php
 
+if (!function_exists('abort_if_forbidden')) {
+    function abort_if_forbidden(string $permission,$message = "You have not permission to this page!"):void
+    {
+        abort_if(!auth()->user()->can($permission),403,$message);
+    }
+}
+
 if (!function_exists('setUserTheme')) {
     function setUserTheme($theme)
     {

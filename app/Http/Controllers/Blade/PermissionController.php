@@ -10,12 +10,11 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller
 {
     /**
-     * CRUD of permissions
+     * list of permissions
      */
-    // list of permissions
     public function index()
     {
-        abort_if (!auth()->user()->can('permission.show'),403);
+        abort_if_forbidden('permission.show');
         $permissions = Permission::with('roles')->get();
         return view('pages.permissions.index',compact('permissions'));
     }
@@ -23,14 +22,14 @@ class PermissionController extends Controller
     // add permission page
     public function add()
     {
-        abort_if (!auth()->user()->can('permission.add'),403);
+        abort_if_forbidden('permission.add');
         return view('pages.permissions.add');
     }
 
     //create permission
     public function create(Request $request)
     {
-        abort_if (!auth()->user()->can('permission.add'),403);
+        abort_if_forbidden('permission.add');
 
         $this->validate($request,[
             'name' => 'required|unique:permissions'
@@ -47,7 +46,7 @@ class PermissionController extends Controller
     // edit page
     public function edit($id)
     {
-        abort_if (!auth()->user()->can('permission.edit'),403);
+        abort_if_forbidden('permission.edit');
         $permission = Permission::findById($id);
         return view('pages.permissions.edit',compact('permission'));
     }
@@ -55,7 +54,7 @@ class PermissionController extends Controller
     // update data
     public function update(Request $request,$id)
     {
-        abort_if (!auth()->user()->can('permission.edit'),403);
+        abort_if_forbidden('permission.edit');
 
         $this->validate($request,[
             'name' => 'required|unique:permissions,name,'.$id
@@ -76,7 +75,7 @@ class PermissionController extends Controller
     // delete permission
     public function destroy($id)
     {
-        abort_if (!auth()->user()->can('permission.delete'),403);
+        abort_if_forbidden('permission.delete');
         $permission = Permission::findById($id);
         DB::table('model_has_permissions')->where('permission_id',$id)->delete();
         DB::table('role_has_permissions')->where('permission_id',$id)->delete();

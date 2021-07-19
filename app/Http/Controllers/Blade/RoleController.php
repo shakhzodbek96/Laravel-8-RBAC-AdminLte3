@@ -17,7 +17,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        abort_if (!auth()->user()->can('roles.show'),403);
+        abort_if_forbidden('roles.show');
 
         if (auth()->user()->hasRole('Super Admin'))
             $roles = Role::with('permissions')->get();
@@ -34,7 +34,7 @@ class RoleController extends Controller
      */
     public function create(Request $request)
     {
-        abort_if (!auth()->user()->can('roles.add'),403);
+        abort_if_forbidden('roles.add');
 
         $this->validate($request,[
             'name' => 'required|unique:roles'
@@ -59,7 +59,7 @@ class RoleController extends Controller
 
     public function add()
     {
-        abort_if (!auth()->user()->can('roles.add'),403);
+        abort_if_forbidden('roles.add');
         $permissions = Permission::all();
         return view('pages.roles.add',compact('permissions'));
     }
@@ -73,7 +73,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('roles.edit'),403);
+        abort_if_forbidden('roles.edit');
         $role = Role::findById($id);
 
         abort_if ($role->name == 'Super Admin' && !auth()->user()->hasRole('Super Admin'),403);
@@ -91,6 +91,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        abort_if_forbidden('roles.edit');
         $this->validate($request,[
             'name' => 'required|unique:roles,name,'.$id
         ]);
@@ -115,7 +116,7 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        abort_if (!auth()->user()->can('roles.delete'),403);
+        abort_if_forbidden('roles.delete');
         $role = Role::findById($id);
 
         if ($role->name == 'Super Admin')

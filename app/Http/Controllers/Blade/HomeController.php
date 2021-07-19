@@ -15,7 +15,7 @@ class HomeController extends Controller
         if ($is_role_exists[0]->cnt)
             return view('pages.dashboard');
         else
-            return redirect()->route('welcome');
+            return view('welcome');
 	}
 
 }
