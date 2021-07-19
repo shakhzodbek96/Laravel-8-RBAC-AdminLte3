@@ -1,4 +1,4 @@
-<p align="center"><img src="https://adminlte.io/img/AdminLTE2.1.png"></p>
+<p align="center"><img src="https://camo.githubusercontent.com/ac4c92d1401fedc477913ae8e79bccca036079a5ffabab9366b2d285a105f436/68747470733a2f2f61646d696e6c74652e696f2f41646d696e4c5445332e706e67"></p>
 
 ## About Template
 
