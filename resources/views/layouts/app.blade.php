@@ -21,9 +21,9 @@
 <body>
 <div class="loader">
     <div class="loader-in">
-        <div class="inner one"></div>
-        <div class="inner two"></div>
-        <div class="inner three"></div>
+        <div class="innerx one"></div>
+        <div class="innerx two"></div>
+        <div class="innerx three"></div>
     </div>
 </div>
     <div id="app" style="display: none">

@@ -47,10 +47,7 @@ table tbody tr td.id-t
     width: 10px;
     font-size: 1.1rem;
 }
-table categories
-{
-    font-size: 1.5rem;
-}
+
 .loader {
   z-index: 100;
   position: fixed;
@@ -62,7 +59,7 @@ table categories
   perspective: 800px;
 }
 
-.inner {
+.innerx {
   position: fixed;
   box-sizing: border-box;
   width: 100%;
@@ -70,21 +67,21 @@ table categories
   border-radius: 50%;
 }
 
-.inner.one {
+.innerx.one {
   left: 0;
   top: 0;
   animation: rotate-one 1s linear infinite;
   border-bottom: 3px solid #00ff00;
 }
 
-.inner.two {
+.innerx.two {
   right: 0;
   top: 0;
   animation: rotate-two 1s linear infinite;
   border-right: 3px solid #0000ff;
 }
 
-.inner.three {
+.innerx.three {
   right: 0;
   bottom: 0;
   animation: rotate-three 1s linear infinite;
