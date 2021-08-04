@@ -5,6 +5,7 @@ use App\Http\Controllers\Blade\UserController;
 use App\Http\Controllers\Blade\RoleController;
 use App\Http\Controllers\Blade\PermissionController;
 use App\Http\Controllers\Blade\HomeController;
+use App\Http\Controllers\Blade\ApiUserController;
 
 /*
 |--------------------------------------------------------------------------
