@@ -2,12 +2,46 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+
 class LogWriter
 {
 
     public static function info($message)
     {
         return self::log($message,'info','info');
+    }
+
+    public static function requests(Request $request, $response,$execution_time = null)
+    {
+        $headers = logObj($request->header());
+        $body = logObj($request->all());
+        $response = logObj($response);
+
+        $message = "Time [".date('H:i:s')."]\n";
+        if (accessToken())
+        {
+            $user = logObj([
+                'username' => apiAuth()->name,
+                'token' => accessToken()->token
+            ]);
+            $name = apiAuth()->name;
+            $message.= "User-----|  $user\n";
+        }else
+        {
+            $name = "Undefined";
+        }
+
+        $message.= "Headers--|  $headers\n";
+        $message.= "Body-----|  $body\n";
+        $message.= "Response-|  $response\n";
+        $message.= "Execution|  $execution_time ms\n------------------------------------------------------------------------------------------------------------------------\n";
+        return self::log($message,date('M-d'),"API/$name/".date('Y-m'));
+    }
+
+    public static function exceptions($message)
+    {
+        return self::log($message,date('M-d'),'Exceptions/'.date('Y-m'));
     }
 
     public static function user_activity($message,$file = 'UserActivity' )

@@ -1,5 +1,28 @@
 <?php
 
+
+if (!function_exists('apiAuth')) {
+    function apiAuth()
+    {
+        return \App\Models\ApiUser::whereId(accessToken()->api_user_id)->first();;
+    }
+}
+
+if (!function_exists('accessToken')) {
+    function accessToken()
+    {
+        return \App\Models\Token::where('token',request()->bearerToken())->first();
+    }
+}
+
+if (!function_exists('apiUserName')) {
+    function apiUserName():string
+    {
+        $apiUser = apiAuth();
+        return $apiUser->name ?? 'Unired';
+    }
+}
+
 if (!function_exists('abort_if_forbidden')) {
     function abort_if_forbidden(string $permission,$message = "You have not permission to this page!"):void
     {
@@ -11,21 +34,21 @@ if (!function_exists('setUserTheme')) {
     function setUserTheme($theme)
     {
         $classes = [
-          'default' => [
-              'body' => '',
-              'nav' => ' navbar-light ',
-              'sidebar' => 'sidebar-dark-primary ',
-          ],
-          'light' => [
-              'body' => '',
-              'nav' => ' navbar-white ',
-              'sidebar' => ' sidebar-light-lightblue '
-          ],
-          'dark' => [
-              'body' => ' dark-mode ',
-              'nav' => ' navbar-dark ',
-              'sidebar' => ' sidebar-dark-secondary '
-          ]
+            'default' => [
+                'body' => '',
+                'nav' => ' navbar-light ',
+                'sidebar' => 'sidebar-dark-primary ',
+            ],
+            'light' => [
+                'body' => '',
+                'nav' => ' navbar-white ',
+                'sidebar' => ' sidebar-light-lightblue '
+            ],
+            'dark' => [
+                'body' => ' dark-mode ',
+                'nav' => ' navbar-dark ',
+                'sidebar' => ' sidebar-dark-secondary '
+            ]
         ];
         return $classes[$theme] ?? [
                 'body' => '',
@@ -100,6 +123,38 @@ if (!function_exists('message_set'))
         session()->put('_message',$message);
         session()->put('_type',$type);
         session()->put('_timer',$timer*1000);
+    }
+}
+
+if (!function_exists('error_message'))
+{
+    function error_message($message)
+    {
+        message_set($message,'error',5);
+    }
+}
+
+if (!function_exists('success_message'))
+{
+    function success_message($message)
+    {
+        message_set($message,'success',5);
+    }
+}
+
+if (!function_exists('warning_message'))
+{
+    function warning_message($message)
+    {
+        message_set($message,'warning',5);
+    }
+}
+
+if (!function_exists('info_message'))
+{
+    function info_message($message)
+    {
+        message_set($message,'info',5);
     }
 }
 
