@@ -25,38 +25,28 @@ class ApiUserController extends Controller
         return view('pages.api-user.add');
     }
 
-    // User activate
-    public function activate(Request $request)
+    public function toggleUserActivation($id)
     {
-        $user = ApiUser::where('id',$request->id)->first();
-        if ($user->is_active == 0){
-            $user->is_active = 1;
-            $user->update();
-        }elseif ($user->is_active == 1){
-            $user->is_active = 0;
-            $user->update();
-        }
-        return $user;
+        $user = ApiUser::where('id',$id)->first();
+        return [
+            'is_active' => $user->toggleUserActivation()
+        ];
     }
+
+    public function toggleTokenActivation($id)
+    {
+        $token = Token::where('id',$id)->first();
+        return [
+            'is_active' => $token->toggleTokenActivation()
+        ];
+    }
+
     public function show($id)
     {
+        abort_if_forbidden('api-user.view');
         $tokens = Token::where('api_user_id',$id)->get();
-
         return view('pages.api-user.show',compact('tokens'));
 
-    }
-    // User token activate
-    public function activateToken(Request $request)
-    {
-        $token = Token::where('id',$request->id)->first();
-        if ($token->is_active == 0){
-            $token->is_active = 1;
-            $token->update();
-        }elseif ($token->is_active == 1){
-            $token->is_active = 0;
-            $token->update();
-        }
-        return $token;
     }
 
     // user create
@@ -66,7 +56,7 @@ class ApiUserController extends Controller
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255', 'unique:api_users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'token_valid_period' => ['required', 'integer','max:180','min:1'],
+            'token_valid_period' => ['required', 'integer','max:1000','min:1'],
         ]);
 
         $user = ApiUser::create(array_merge($request->all(),[

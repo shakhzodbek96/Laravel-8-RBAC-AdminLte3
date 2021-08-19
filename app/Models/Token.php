@@ -45,6 +45,13 @@ Token extends Model
         ]);
     }
 
+    public function toggleTokenActivation()
+    {
+        $this->is_active = !$this->is_active;
+        $this->save();
+        return $this->is_active;
+    }
+
     public function forget()
     {
         $this->is_active = 0;

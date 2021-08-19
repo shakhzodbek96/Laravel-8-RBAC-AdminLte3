@@ -27,17 +27,17 @@ class ApiAuthController extends ResponseController
             ->first();
 
 
-        // User is not active
-        if (!$user->is_active)
-        {
-            return self::errorResponse("User is not active!");
-        }
-
         if (is_null($user))
         {
             return self::authFailed();
         }
-        else
+        // User is not active
+        elseif (!$user->is_active)
+            {
+                return self::errorResponse("User is not active!");
+            }
+
+            else
         {
             return (new TokenController())->getToken($request->all());
         }

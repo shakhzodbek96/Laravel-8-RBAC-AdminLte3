@@ -96,6 +96,10 @@ class RegisterController extends Controller
                     ["name" => 'user.edit', "title" => 'Userlarni o\'zgartirish', "guard_name" => 'web'],
                     ["name" => 'user.add', "title" => 'Yangi Userlarni qo\'shish', "guard_name" => 'web'],
                     ["name" => 'user.delete', "title" => 'Userlarni o\'chirish', "guard_name" => 'web'],
+                    ["name" => 'api-user.add', "title" => 'ApiUser Add', "guard_name" => 'web'],
+                    ["name" => 'api-user.view', "title" => 'ApiUser View', "guard_name" => 'web'],
+                    ["name" => 'api-user.edit', "title" => 'ApiUser Edit', "guard_name" => 'web'],
+                    ["name" => 'api-user-passport.view', "title" => 'ApiUser Password view', "guard_name" => 'web'],
                 ]);
             }
 

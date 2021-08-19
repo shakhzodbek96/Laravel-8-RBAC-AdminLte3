@@ -52,7 +52,7 @@ class UserController extends Controller
 
         $activity = "\nCreated by: ".json_encode(auth()->user())
             ."\nNew User: ".json_encode($user)
-            ."\nRoles: ".implode(", ",$request->get('roles'));
+            ."\nRoles: ".implode(", ",$request->get('roles') ?? []);
 
         LogWriter::user_activity($activity,'AddingUsers');
 
@@ -62,7 +62,7 @@ class UserController extends Controller
     // user edit page
     public function edit($id)
     {
-        abort_if((!auth()->user()->can('user.edit') && auth()->user()->id != $id),403);
+        abort_if((!auth()->user()->can('user.edit') && auth()->id() != $id),403);
 
         $user = User::find($id);
 
@@ -83,7 +83,7 @@ class UserController extends Controller
     // update user dates
     public function update(Request $request, $id)
     {
-        abort_if((!auth()->user()->can('user.edit') && auth()->user()->id != $id),403);
+        abort_if((!auth()->user()->can('user.edit') && auth()->id() != $id),403);
 
         $activity = "\nUpdated by: ".logObj(auth()->user());
         $this->validate($request,[

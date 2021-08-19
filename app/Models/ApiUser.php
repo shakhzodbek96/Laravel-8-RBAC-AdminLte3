@@ -10,7 +10,8 @@ class ApiUser extends Model
         'name',
         'created_by',
         'password',
-        'token_valid_period'
+        'token_valid_period',
+        'is_active'
     ];
 
     public function tokens()
@@ -36,5 +37,12 @@ class ApiUser extends Model
         foreach ($this->tokens as $token) {
             $token->delete();
         }
+    }
+
+    public function toggleUserActivation()
+    {
+        $this->is_active = !$this->is_active;
+        $this->save();
+        return $this->is_active;
     }
 }

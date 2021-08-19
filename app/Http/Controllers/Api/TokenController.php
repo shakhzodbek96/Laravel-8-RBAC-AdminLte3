@@ -42,17 +42,15 @@ class TokenController extends ResponseController
         {
             return self::authFailed();
         }
-
-        // User is not active
-        if (!$token->user->is_active)
-        {
-            return self::errorResponse("User is not active!");
-        }
-
         // date expire
         if (strtotime($token->token_expires_at) < strtotime(date('r')))
         {
             return self::errorResponse("Token is expired!");
+        }
+        // User is not active
+        if (!$token->user->is_active)
+        {
+            return self::errorResponse("User is not active!");
         }
 
         // status
@@ -60,7 +58,6 @@ class TokenController extends ResponseController
         {
             return self::errorResponse('Your token is deactivated!');
         }
-
         return self::successResponse([
             'token_expires_at' => $token->token_expires_at
         ]);

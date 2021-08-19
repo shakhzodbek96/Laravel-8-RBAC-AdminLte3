@@ -61,8 +61,6 @@ Route::group(['middleware' => 'auth'],function (){
     Route::get('/api-users',[ApiUserController::class,'index'])->name('api-userIndex');
     Route::get('/api-user/add',[ApiUserController::class,'add'])->name('api-userAdd');
     Route::post('/api-user/create',[ApiUserController::class,'create'])->name('api-userCreate');
-    Route::get('/api-user/activate',[ApiUserController::class,'activate'])->name('api-userActivate');
-    Route::get('/api-user/activate-token',[ApiUserController::class,'activateToken'])->name('api-userTokenActivate');
     Route::get('/api-user/show/{id}',[ApiUserController::class,'show'])->name('api-userShow');
     Route::get('/api-user/{id}/edit',[ApiUserController::class,'edit'])->name('api-userEdit');
     Route::post('/api-user/update/{id}',[ApiUserController::class,'update'])->name('api-userUpdate');

@@ -26,7 +26,7 @@ if (!function_exists('apiUserName')) {
 if (!function_exists('abort_if_forbidden')) {
     function abort_if_forbidden(string $permission,$message = "You have not permission to this page!"):void
     {
-        abort_if(!auth()->user()->can($permission),403,$message);
+        abort_if(is_null(auth()->user()) || !auth()->user()->can($permission),403,$message);
     }
 }
 
