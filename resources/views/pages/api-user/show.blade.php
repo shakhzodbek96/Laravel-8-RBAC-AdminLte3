@@ -95,9 +95,11 @@
         }
         function toggle_api_user(id){
             $.ajax({
-                url: "/api-user/activate-token/?q=",
-                type: "GET",
-                data:{id},
+                url: "/api/api-token/toggle-status/"+id,
+                type: "POST",
+                data:{
+                    _token: '{!! auth()->user()->password !!}'
+                },
                 dataType: "JSON",
                 success: function(result){
                     if (result.is_active == 1){

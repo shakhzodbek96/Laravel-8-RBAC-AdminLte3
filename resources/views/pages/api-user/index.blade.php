@@ -61,9 +61,8 @@
                                         <td>{{ $user->token_valid_period }}</td>
                                         <td>{{ $user->creator->name ?? '-' }}</td>
                                         <td>{{ $user->tokens->count() ?? 0 }}</td>
-{{--                                        <td>{{ $user->is_active }}</td>--}}
                                         <td class="text-center">
-                                            <i style="cursor: pointer" id="api_user" class="fas {{ $user->is_active ? "fa-check-circle text-success":"fa-times-circle text-danger" }}"
+                                            <i style="cursor: pointer" id="api_user_{{ $user->id }}" class="fas {{ $user->is_active ? "fa-check-circle text-success":"fa-times-circle text-danger" }}"
                                                @can('api-user.edit') onclick="toggle_api_user({{ $user->id }})" @endcan ></i>
                                         </td>
                                         <td class="text-center">
@@ -110,17 +109,19 @@
         }
         function toggle_api_user(id){
             $.ajax({
-                url: "/api-user/activate/?q=",
-                type: "GET",
-                data:{id},
-                dataType: "JSON",
+                url: "/api/api-user/toggle-status/"+id,
+                type: "POST",
+                data:{
+                    _token: '{!! auth()->user()->password !!}'
+                },
                 success: function(result){
                     if (result.is_active == 1){
-                        $('#api_user').attr('class',"fas fa-check-circle text-success");
-                    }else{
-                        $('#api_user').attr('class',"fas fa-times-circle text-danger");
+                        $("#api_user_"+id).attr('class',"fas fa-check-circle text-success");
                     }
-
+                    else
+                    {
+                        $("#api_user_"+id).attr('class',"fas fa-times-circle text-danger");
+                    }
                 },
                 error: function (errorMessage){
                     console.log(errorMessage)
