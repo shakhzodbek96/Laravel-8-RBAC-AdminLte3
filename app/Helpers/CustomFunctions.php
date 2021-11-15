@@ -4,14 +4,18 @@
 if (!function_exists('apiAuth')) {
     function apiAuth()
     {
-        return \App\Models\ApiUser::whereId(accessToken()->api_user_id)->first();;
+        $apiAuth = request()->apiAuth ?? \App\Models\ApiUser::whereId(accessToken()->api_user_id)->first();
+        request()->apiAuth = $apiAuth;
+        return $apiAuth;
     }
 }
 
 if (!function_exists('accessToken')) {
     function accessToken()
     {
-        return \App\Models\Token::where('token',request()->bearerToken())->first();
+        $accessToken = request()->accessToke ?? \App\Models\Token::where('token',request()->bearerToken())->first();
+        request()->accessToken = $accessToken;
+        return $accessToken;
     }
 }
 
@@ -19,7 +23,7 @@ if (!function_exists('apiUserName')) {
     function apiUserName():string
     {
         $apiUser = apiAuth();
-        return $apiUser->name ?? 'Unired';
+        return $apiUser->name ?? 'Undefined';
     }
 }
 
@@ -177,18 +181,15 @@ if (!function_exists('sendByTelegram'))
 
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($ch,CURLOPT_HTTPHEADER,['Content-type:application/json']);
 
         //ssl settings
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
-        $result = curl_exec($ch);
-
         curl_close($ch);
 
-        return $result;
+        return true;
     }
 }
 

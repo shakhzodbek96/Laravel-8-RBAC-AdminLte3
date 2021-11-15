@@ -42,7 +42,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Срок действия токена</label>
-                                <input type="number" name="token_valid_period" max="365" min="1" class="form-control {{ $errors->has('token_valid_period') ? "is-invalid":"" }}" value="{{ old('token_valid_period',60) }}">
+                                <input type="number" name="token_valid_period" max="999999" min="1" class="form-control {{ $errors->has('token_valid_period') ? "is-invalid":"" }}" value="{{ old('token_valid_period',30) }}">
                                 @if($errors->has('token_valid_period'))
                                     <span class="error invalid-feedback">{{ $errors->first('token_valid_period') }}</span>
                                 @endif

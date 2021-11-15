@@ -54,7 +54,7 @@ class ApiUserController extends Controller
     {
         abort_if_forbidden('api-user.add');
         $this->validate($request,[
-            'name' => ['required', 'string', 'max:255', 'unique:api_users'],
+            'name' => ['required', 'string', 'max:999999', 'unique:api_users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'token_valid_period' => ['required', 'integer','max:1000','min:1'],
         ]);
